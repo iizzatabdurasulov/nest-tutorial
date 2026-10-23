@@ -68,11 +68,16 @@ export class ProductService {
       throw new NotFoundException(`sizga tegishli product topilmadi`);
     }
 
-    return this.prisma.product.delete({
+    const deletedProduct = await this.prisma.product.delete({
       where: { id: productId },
     });
+
+    return {
+      message: 'Product successfully deleted',
+      data: deletedProduct,
+    };
   }
- 
+
   // Update product
   async update(productId: number, userId: number, data: ProductDto) {
     const product = await this.prisma.product.findUnique({
